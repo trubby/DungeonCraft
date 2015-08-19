@@ -35,7 +35,7 @@ public class MobsListener implements Listener {
 	@EventHandler
 	public void onEntityTarget(EntityTargetLivingEntityEvent e){
 		if(e.getEntityType() == EntityType.CREEPER){
-			Creeper c = (Creeper) e.getEntity();
+			final Creeper c = (Creeper) e.getEntity();
 			if(!creeperTask.containsKey(c.getUniqueId())){
 				int taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(DG.plugin, new Runnable() {
 					@Override

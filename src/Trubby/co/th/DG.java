@@ -42,6 +42,8 @@ import com.sk89q.worldedit.schematic.SchematicFormat;
 @SuppressWarnings("deprecation")
 public class DG extends JavaPlugin {
 
+	//GITHUB test :D
+	
 	public DungeonManager dm;
 	public DGPlayerManager dpm;
 	public GuiManager invm;
