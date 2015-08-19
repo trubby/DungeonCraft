@@ -1,0 +1,17 @@
+name: DG
+version: 1.0
+description: awd
+main: Trubby.co.th.DG
+author: Tub
+depend: [WorldEdit, MythicMobs]
+loadbefore: [MultiWorld]
+commands:
+  dg:
+  rs:
+  dgori:
+  dgnew:
+  q:
+  del:
+  load:
+  dglist:
+  dgtest:
