@@ -14,6 +14,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityPortalEnterEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -22,6 +23,8 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 
 import Trubby.co.th.DG;
@@ -318,5 +321,37 @@ public class PlayerListener implements Listener{
 		e.getPlayer().setCanPickupItems(true);
 	}
 		
+	@EventHandler
+	public void portalEnter(EntityPortalEnterEvent e){
+		Bukkit.broadcastMessage("" + e.getEntityType());
+	}
+	
+	@EventHandler
+	public void onMove(PlayerMoveEvent e){
+		if ((e.getFrom().getBlockX() != e.getTo().getBlockX()) || (e.getFrom().getBlockZ() != e.getTo().getBlockZ())) {
+			Player p = e.getPlayer();
+		
+			ArmorStand as = (ArmorStand) p.getWorld().spawnEntity(p.getLocation().add(0, -1.4, 0), EntityType.ARMOR_STAND);
+			as.setVisible(false);
+			as.setGravity(false);
+			as.setHeadPose(new EulerAngle(-1.5, 0, 0));
+			
+			SkullMeta sm = (SkullMeta) Bukkit.getItemFactory().getItemMeta(Material.SKULL_ITEM);
+			sm.setOwner(p.getName());
+			ItemStack is = new ItemStack(Material.SKULL_ITEM);
+			is.setDurability((short) 3);
+			is.setItemMeta(sm);
+			
+			as.setHelmet(is);
+			
+			Bukkit.getScheduler().runTaskLater(DG.plugin, new Runnable() {
+				public void run() {
+					as.remove();
+				}
+			}, 15L);
+			
+		}
+		
+	}
 	
 }
