@@ -8,6 +8,7 @@ import java.util.Random;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.ArmorStand;
@@ -144,7 +145,8 @@ public class DG extends JavaPlugin {
 			}
 		}else if(label.equalsIgnoreCase("dgnew")){
 			for (int i = 1; i <= 1; i++) {
-				Location startLoc = gen.create("Stronghold" + i);
+				World world = gen.create("Stronghold" + i);
+				Location startLoc = new Location(world, 0.00, 45, 0.00);
 				gen.generateRoom(startLoc, i);
 			}
 		}else if(label.equalsIgnoreCase("dgtest")){

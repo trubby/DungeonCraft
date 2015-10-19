@@ -20,7 +20,6 @@ import Trubby.co.th.Map.Dungeon;
 import Trubby.co.th.Map.Room;
 import Trubby.co.th.Map.VoidGenerator;
 import Trubby.co.th.Util.LocationUtil;
-import net.md_5.bungee.api.ChatColor;
 
 import com.sk89q.worldedit.CuboidClipboard;
 import com.sk89q.worldedit.EditSession;
@@ -30,7 +29,7 @@ import com.sk89q.worldedit.data.DataException;
 import com.sk89q.worldedit.schematic.SchematicFormat;
 
 @SuppressWarnings("deprecation")
-public class Generator {
+public class Generator2 {
 	
 	ArrayList<String> ccRoomListS = new ArrayList<>();
 	ArrayList<String> ccRoomListL = new ArrayList<>();
@@ -58,9 +57,7 @@ public class Generator {
 		
 		while(!isDone){
 			/**
-			 *  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-			 * 											FIRST
-			 *  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+			 * 				FIRST
 			 */
 			if(first){
 				first = false;
@@ -113,14 +110,13 @@ public class Generator {
 				firstBuildList.add(new GenCache(max, min, myBuildLoc, nextBuildLoc, bf, cc));
 			}
 			
-			// BRIDGE and ROOM
+			/**
+			 * 			  BRIDGE & ROOM
+			 */
+			
 			if(roomBuildList.size() < 10){
 				
-				/**
-				 *  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-				 * 											BRIDGE
-				 *  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-				 */
+				//BRIDGE---------------------------------
 				if(true){
 					CuboidClipboard cc = loadSchematic(ccBridgeList.get(ran.nextInt(ccBridgeList.size())));
 	
@@ -150,8 +146,8 @@ public class Generator {
 					
 					// OFFSET
 					int offsetX = cc.getOffset().getBlockX();
-					int offsetY = cc.getOffset().getBlockY();
 					int offsetZ = cc.getOffset().getBlockZ();
+					int offsetY = cc.getOffset().getBlockY();
 		
 					for (int y = 0; y < cc.getSize().getBlockY(); y++) {
 						for (int x = 0; x < cc.getSize().getBlockX(); x++) {
@@ -173,12 +169,12 @@ public class Generator {
 					}
 				
 					// MIN MAX FINDING
-					double xMax = myBuildLoc.getX() + offsetX + cc.getSize().getBlockX() - 1;
 					double yMax = myBuildLoc.getY() + offsetY + cc.getSize().getBlockY() - 1;
+					double xMax = myBuildLoc.getX() + offsetX + cc.getSize().getBlockX() - 1;
 					double zMax = myBuildLoc.getZ() + offsetZ + cc.getSize().getBlockZ() - 1;
 	
-					double xMin = myBuildLoc.getX() + offsetX;
 					double yMin = myBuildLoc.getY() + offsetY;
+					double xMin = myBuildLoc.getX() + offsetX;
 					double zMin = myBuildLoc.getZ() + offsetZ;
 	
 					Location l1 = new Location(myBuildLoc.getWorld(), xMax, yMax, zMax);
@@ -188,14 +184,10 @@ public class Generator {
 					max = CuboidMax(l1, l2);
 					
 					bridgeBuildList.add(new GenCache(max, min, myBuildLoc, nextBuildLoc, bf, cc));
-					
+				
 				}
 				
-				/**
-				 *  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-				 * 											ROOM
-				 *  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-				 */
+				//ROOM---------------------------------
 				if(true){
 					BlockFace bf = null;
 					GenCache gc = bridgeBuildList.get(bridgeBuildList.size() - 1);
@@ -222,17 +214,15 @@ public class Generator {
 					
 					// START BLOCK GET
 					myBuildLoc = gc.nextBuildLoc;
-					Bukkit.broadcastMessage(roomBuildList.size() + ": " + myBuildLoc.getX() + " " + myBuildLoc.getZ());
 					// ROTATE
 					if (getDirection(gc.bf) > 0){
 						cc.rotate2D(getDirection(gc.bf));
 					}
 					
 					// OFFSET
-					com.sk89q.worldedit.Vector offset = cc.getOffset();
-					int offsetX = offset.getBlockX();
-					int offsetZ = offset.getBlockZ();
-					int offsetY = offset.getBlockY();
+					int offsetX = cc.getOffset().getBlockX();
+					int offsetZ = cc.getOffset().getBlockZ();
+					int offsetY = cc.getOffset().getBlockY();
 		
 					for (int y = 0; y < cc.getSize().getBlockY(); y++) {
 						for (int x = 0; x < cc.getSize().getBlockX(); x++) {
@@ -245,9 +235,8 @@ public class Generator {
 										nextBuildLoc = myBuildLoc.clone().add(x + offsetX, y + offsetY, z + offsetZ);
 		
 									}else if (currentBlock == Material.MOB_SPAWNER.getId()) {
-										
-										spawners.add(myBuildLoc.clone().add(x + offsetX, y + offsetY, z + offsetZ));
-									
+										Location spawnerLoc = myBuildLoc.clone().add(x + offsetX + 0.4, y + offsetY, z + offsetZ + 0.4);
+										spawners.add(spawnerLoc);
 									}
 								}
 							}
@@ -270,7 +259,7 @@ public class Generator {
 					max = CuboidMax(l1, l2);
 					
 					roomBuildList.add(new GenCache(max, min, myBuildLoc, nextBuildLoc, bf, cc, spawners));
-					
+				
 				}
 			
 				// OVERLAP CHECK
@@ -304,40 +293,22 @@ public class Generator {
 			
 		}
 		
-		/**
-		 *  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-		 * 										   PASTE ALL
-		 *  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-		 */
+		//PASTE ALL
 		GenCache firstGC = firstBuildList.get(0);
 		pasteSchematic(firstGC.myBuildLoc, firstGC.cc);
-		int i = 0;
+		
 		for(GenCache gc : roomBuildList){
 			pasteSchematic(gc.myBuildLoc, gc.cc);
-			
-			i++;//TODO test
 			
 			Room r = new Room(d, gc.min, gc.max);
 			r.spawners = gc.spawners;
 			d.rooms.add(r);
 			
-			Bukkit.broadcastMessage(ChatColor.YELLOW + "" + i + ": "  + gc.myBuildLoc.getX() + " " + gc.myBuildLoc.getZ());
-			
-			Location min = new Location(gc.myBuildLoc.getWorld(), gc.min.getX(), gc.min.getY(), gc.min.getZ());//TODO test
-			Location max = new Location(gc.myBuildLoc.getWorld(), gc.max.getX(), gc.max.getY(), gc.max.getZ());//TODO test
-			
-			gc.myBuildLoc.clone().add(0, 2, 0).getBlock().setType(Material.REDSTONE_BLOCK);
-			
-			min.getBlock().setType(Material.MELON_BLOCK);
-			max.getBlock().setType(Material.GLOWSTONE);
-			
 			for(Location spawnLoc : gc.spawners){
 				if(spawnLoc.getBlock().getType() != Material.MOB_SPAWNER){
-					Bukkit.broadcastMessage(i + " wrong ");
-					spawnLoc.getBlock().setType(Material.GLASS);//TODO test
-				}else{
-					spawnLoc.getBlock().setType(Material.BEACON);
+					Bukkit.broadcastMessage("wrong");
 				}
+				spawnLoc.getBlock().setType(Material.AIR);
 			}
 		}
 		
@@ -457,7 +428,7 @@ public class Generator {
 
 	public static void pasteSchematic(Location origin, CuboidClipboard schematic) {
 		EditSession editSession = new EditSession(new BukkitWorld(origin.getWorld()), 2147483647);
-		editSession.setFastMode(false);
+		editSession.setFastMode(true);
 
 		try {
 			schematic.paste(editSession, new com.sk89q.worldedit.Vector(origin.getBlockX(), origin.getBlockY(), origin.getBlockZ()), true);

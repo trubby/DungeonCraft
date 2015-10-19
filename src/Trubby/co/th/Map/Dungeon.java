@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -50,6 +51,7 @@ public class Dungeon {
 	public int state = 0;
 	
 	public ArrayList<Location> openedChests = new ArrayList<Location>(); //TODO
+	public World world;
 	public Location startLoc;
 	public Scoreboard sb;
 	
@@ -130,6 +132,26 @@ public class Dungeon {
 		deathBodies.remove(as);
 	}
 	
+	public void tryToUsePortal(){
+		boolean doStandOnPortal = true;
+		for(UUID uuid : players){
+			Material mat = Bukkit.getPlayer(uuid).getLocation().add(0, -0.5, 0).getBlock().getType();
+			if(mat != Material.WOOL){
+				doStandOnPortal = false;
+			}
+		}
+		
+		if(doStandOnPortal){
+			goNextLevel();
+		}else{
+			broadCast(ChatColor.RED + "Please stand inside the portal to proceed next level.");
+		}
+	}
+	
+	public void goNextLevel(){
+		
+	}
+	
 	public boolean checkAllDeath(){
 		for(UUID uuid : players){
 			if(Bukkit.getPlayer(uuid).getGameMode() == GameMode.ADVENTURE){
@@ -156,6 +178,8 @@ public class Dungeon {
 		}
 		
 		locLogTask = new LocLogTask(this).runTaskTimer(DG.plugin, 10, 100);
+		
+		broadCast("START!");
 	}
 	
 	public void reset(){
@@ -165,9 +189,13 @@ public class Dungeon {
 			p.setGameMode(GameMode.ADVENTURE);
 			p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
 			
-			players.clear();
-			locLogTask.cancel();
 			//TODO reset scoreboard
+		}
+		
+		players.clear();
+		
+		for(ArmorStand as : deathBodies.keySet()){
+			as.remove();
 		}
 	}
 	

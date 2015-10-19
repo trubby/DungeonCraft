@@ -3,6 +3,7 @@ package Trubby.co.th.Inventory;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
+import Trubby.co.th.DG;
 import Trubby.co.th.Player.DGPlayer;
 import Trubby.co.th.Util.ItemUtil;
 
@@ -24,12 +25,19 @@ public class InvManager {
 		updateChestplate(dgp);
 		updateLegging(dgp);
 		updateBoots(dgp);
+		updateSkills(dgp);
 		
 		dgp.p.updateInventory();
 		//Update Equipment sword bow arrow helmet chest leg boots
 		//Update Skills
 	}
 	
+	public static void updateSkills(DGPlayer dgp) {
+		//TODO
+		dgp.p.getInventory().setItem(2, DG.plugin.sm.hook.item());
+		dgp.p.getInventory().setItem(3, DG.plugin.sm.smokeBomb.item());
+	}
+
 	//GOLD
 	public static void updateGoldSlot(DGPlayer dgp, boolean doRefresh){
 		dgp.p.getInventory().setItem(17, ItemUtil.getGold(dgp.gold));

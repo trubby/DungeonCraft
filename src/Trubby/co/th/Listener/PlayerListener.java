@@ -12,6 +12,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockRedstoneEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityPortalEnterEvent;
@@ -53,6 +54,7 @@ public class PlayerListener implements Listener{
 		DG.plugin.dpm.addPlayer(p);
 		DG.plugin.nms.sendTitleToPlayer(p, ChatColor.RED + "Dungeon" + ChatColor.GOLD + "Craft" + ChatColor.YELLOW + "!", "It's time!", 10, 50, 30);
 		ParticleEffect.MOB_APPEARANCE.display(0, 0, 0, 0.1f, 1, p.getLocation(), p);
+		p.setGameMode(GameMode.ADVENTURE);
 	}
 	
 	@EventHandler
@@ -186,7 +188,7 @@ public class PlayerListener implements Listener{
 				return;
 			}
 			
-			Bukkit.broadcastMessage("" + e.getDamage());
+			//Bukkit.broadcastMessage("" + e.getDamage());
 			
 			DGPlayer dgp = DG.plugin.dpm.getDGPlayer(p);
 			e.setDamage(dgp.swordLevel + 1);
@@ -286,23 +288,14 @@ public class PlayerListener implements Listener{
 		Player p = e.getEntity();
 		Dungeon d = DG.plugin.dm.getDungeon(p);
 		
+		e.setDeathMessage(null);
+		
 		if(d != null){
 			d.deathNormal(p);
 		}
 	}
 	
-	@EventHandler
-	public void onManipulateAS(PlayerArmorStandManipulateEvent e){
-		Player p = e.getPlayer();
-		ArmorStand as = e.getRightClicked();
-		Dungeon d = DG.plugin.dm.getDungeon(p);
-		
-		if(d != null){
-			e.setCancelled(true);
-			d.revive(p, Bukkit.getPlayer(d.deathBodies.get(as)), as);
-		}
-	}
-	
+	//	AUTO RESPAWN
 	@EventHandler
 	void death(PlayerDeathEvent e) {
 		final Player p = e.getEntity();
@@ -320,13 +313,30 @@ public class PlayerListener implements Listener{
 	public void respawn(PlayerRespawnEvent e) {
 		e.getPlayer().setCanPickupItems(true);
 	}
-		
+	
+	//	REVIVE
 	@EventHandler
+	public void onManipulateAS(PlayerArmorStandManipulateEvent e){
+		Player p = e.getPlayer();
+		ArmorStand as = e.getRightClicked();
+		Dungeon d = DG.plugin.dm.getDungeon(p);
+		
+		if(d != null){
+			e.setCancelled(true);
+			d.revive(p, Bukkit.getPlayer(d.deathBodies.get(as)), as);
+		}
+	}
+	
+	/*
+	 * 		TESTING AREA
+	 */
+	
+	//@EventHandler
 	public void portalEnter(EntityPortalEnterEvent e){
 		Bukkit.broadcastMessage("" + e.getEntityType());
 	}
 	
-	@EventHandler
+	//@EventHandler
 	public void onMove(PlayerMoveEvent e){
 		if ((e.getFrom().getBlockX() != e.getTo().getBlockX()) || (e.getFrom().getBlockZ() != e.getTo().getBlockZ())) {
 			Player p = e.getPlayer();
@@ -352,6 +362,17 @@ public class PlayerListener implements Listener{
 			
 		}
 		
+	}
+	
+	public void onPressButton(BlockRedstoneEvent e){
+		if(e.getNewCurrent() == 15|| e.getBlock().getType() == Material.STONE_BUTTON){
+			
+			Dungeon d = DG.plugin.dm.getDungeon(e.getBlock().getWorld());
+			if(d != null){
+			}
+			
+		}
+			//TODO try to move to next level
 	}
 	
 }

@@ -30,7 +30,7 @@ import com.sk89q.worldedit.data.DataException;
 import com.sk89q.worldedit.schematic.SchematicFormat;
 
 @SuppressWarnings("deprecation")
-public class Generator {
+public class Generatorback {
 	
 	ArrayList<String> ccRoomListS = new ArrayList<>();
 	ArrayList<String> ccRoomListL = new ArrayList<>();
@@ -222,7 +222,6 @@ public class Generator {
 					
 					// START BLOCK GET
 					myBuildLoc = gc.nextBuildLoc;
-					Bukkit.broadcastMessage(roomBuildList.size() + ": " + myBuildLoc.getX() + " " + myBuildLoc.getZ());
 					// ROTATE
 					if (getDirection(gc.bf) > 0){
 						cc.rotate2D(getDirection(gc.bf));
@@ -321,7 +320,7 @@ public class Generator {
 			r.spawners = gc.spawners;
 			d.rooms.add(r);
 			
-			Bukkit.broadcastMessage(ChatColor.YELLOW + "" + i + ": "  + gc.myBuildLoc.getX() + " " + gc.myBuildLoc.getZ());
+			Bukkit.broadcastMessage(ChatColor.YELLOW + ""+gc.myBuildLoc);
 			
 			Location min = new Location(gc.myBuildLoc.getWorld(), gc.min.getX(), gc.min.getY(), gc.min.getZ());//TODO test
 			Location max = new Location(gc.myBuildLoc.getWorld(), gc.max.getX(), gc.max.getY(), gc.max.getZ());//TODO test
@@ -336,7 +335,7 @@ public class Generator {
 					Bukkit.broadcastMessage(i + " wrong ");
 					spawnLoc.getBlock().setType(Material.GLASS);//TODO test
 				}else{
-					spawnLoc.getBlock().setType(Material.BEACON);
+					spawnLoc.getBlock().setType(Material.AIR);
 				}
 			}
 		}

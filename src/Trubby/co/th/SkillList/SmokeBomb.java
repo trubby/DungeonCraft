@@ -1,6 +1,8 @@
-package Trubby.co.th.Skill;
+package Trubby.co.th.SkillList;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -11,6 +13,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -18,6 +21,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import Trubby.co.th.DG;
 import Trubby.co.th.Particle.ParticleEffect;
 import Trubby.co.th.Player.DGPlayer;
+import net.md_5.bungee.api.ChatColor;
 
 public class SmokeBomb {
 	
@@ -29,45 +33,64 @@ public class SmokeBomb {
 		
 		//	COOLDOWN CHECK
 		if(cooldown.containsKey(p.getUniqueId())){
-			Bukkit.broadcastMessage("contain");
 			long castMillis = cooldown.get(p.getUniqueId());
 			long currentCooldown = System.currentTimeMillis() - castMillis;
 			
-			p.sendMessage("cooldown : " + (requireCooldown - currentCooldown));
+			p.sendMessage(ChatColor.RED + "Cooldown " + ChatColor.WHITE + "Hook " + ChatColor.RED + ((float) ((int)(requireCooldown - currentCooldown) / 100)) / 10 + " sec.");
 			return;
 		}else{
 			//PUT & AUTO REMOVE
-			Bukkit.broadcastMessage("put");
+			//Bukkit.broadcastMessage("put"); TODO
 			
+//			MANA CHECK
+			DGPlayer dgp = DG.plugin.dpm.getDGPlayer(p);
+			if(dgp.mana >= manaCost){
+				dgp.mana = dgp.mana - manaCost;
+				dgp.updateManaBar();
+			}else{
+				p.sendMessage(ChatColor.RED + "Not enough mana.");
+				return;
+			}
+			
+			Item i = p.getWorld().dropItem(p.getEyeLocation(), new ItemStack(Material.FIREWORK_CHARGE));
+			i.setPickupDelay(Integer.MAX_VALUE);
+			i.setVelocity(p.getLocation().getDirection().multiply(1.5));
+			p.getWorld().playSound(p.getLocation(), Sound.SHOOT_ARROW, 1f, 1f);
+			
+			new SmokeBombTask(p, i, this).runTaskLater(DG.plugin, 25L);
+			
+			//COOLDOWN
 			@SuppressWarnings("unused")
 			int taskId = Bukkit.getScheduler().scheduleSyncDelayedTask(DG.plugin, new Runnable() {
 				
 				@Override
 				public void run() {
 					cooldown.remove(p.getUniqueId());
-					Bukkit.broadcastMessage("auro remove");
+					//Bukkit.broadcastMessage("auro remove"); TODO 
 				}
 			}, requireCooldown / 50);
 			
 			cooldown.put(p.getUniqueId(), System.currentTimeMillis());
 		}
 		
-		//	MANA CHECK
-		DGPlayer dgp = DG.plugin.dpm.getDGPlayer(p);
-		if(dgp.mana >= manaCost){
-			dgp.mana = dgp.mana - manaCost;
-			dgp.updateManaBar();
-		}else{
-			return;
-		}
+	}
+	
+	public ItemStack item(){
 		
-		Item i = p.getWorld().dropItem(p.getEyeLocation(), new ItemStack(Material.FIREWORK_CHARGE));
-		i.setPickupDelay(Integer.MAX_VALUE);
-		i.setVelocity(p.getLocation().getDirection().multiply(1.5));
-		p.getWorld().playSound(p.getLocation(), Sound.SHOOT_ARROW, 1f, 1f);
+		ItemStack is = new ItemStack(Material.CLAY_BALL);
+		ItemMeta im = is.getItemMeta();
+		im.setDisplayName("SmokeBomb " + ChatColor.GRAY + "(left click)");
 		
-		new SmokeBombTask(p, i, this).runTaskLater(DG.plugin, 25L);
+		List<String> lore = new ArrayList<>();
+		lore.add(ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "Utility Skill");
+		lore.add(ChatColor.WHITE + "\"Make nearby monster cannot move.\"");
+		lore.add(ChatColor.GRAY + "Mana : " + ChatColor.GREEN + "10");
+		lore.add(ChatColor.GRAY + "Cooldown : " + ChatColor.GREEN + "5 sec.");
+		im.setLore(lore);
 		
+		is.setItemMeta(im);
+		
+		return is;
 	}
 
 }

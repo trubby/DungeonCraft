@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -18,10 +19,20 @@ public class DungeonManager {
 	public ArrayList<Dungeon> dungeons = new ArrayList<>();
 	public ArrayList<Integer> ST_takenId = new ArrayList<>();
 	
-	//GET PLAYER DUNGEON
+	//GET PLAYER's DUNGEON
 	public Dungeon getDungeon(Player p){
 		for(Dungeon d : dungeons){
 			if(d.players.contains(p.getUniqueId())){
+				return d;
+			}
+		}
+		return null;
+	}
+	
+	//GET DUNGEON FROM WORLD
+	public Dungeon getDungeon(World w){
+		for(Dungeon d : dungeons){
+			if(d.world == w){
 				return d;
 			}
 		}
@@ -73,6 +84,7 @@ public class DungeonManager {
 		//DUNGEON
 		Dungeon d = new Dungeon(worldName, "Stronghold", level); //TODO remove
 		d.startLoc = startLoc;
+		d.world = d.startLoc.getWorld();
 		
 		for (int i = 1; i <= 10; i++) {
 			String roomPath = "Room_" + i;

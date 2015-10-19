@@ -75,5 +75,9 @@ public class LocUtil {
 		Vector vec = new Vector(Double.parseDouble(s[0]), Double.parseDouble(s[1]), Double.parseDouble(s[2]));
 		return vec;
 	}
+	
+	public static Location blockLocation(Location loc){
+		return new Location(loc.getWorld(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+	}
 
 }
