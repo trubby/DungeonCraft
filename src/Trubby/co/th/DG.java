@@ -8,6 +8,7 @@ import java.util.Random;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -27,6 +28,9 @@ import Trubby.co.th.Listener.PlayerListener;
 import Trubby.co.th.Map.Dungeon;
 import Trubby.co.th.Map.DungeonManager;
 import Trubby.co.th.Mobs.MobManager;
+import Trubby.co.th.Party.Party;
+import Trubby.co.th.Party.PartyListener;
+import Trubby.co.th.Party.PartyManager;
 import Trubby.co.th.Player.DGPlayer;
 import Trubby.co.th.Player.DGPlayerManager;
 import Trubby.co.th.Queue.QueueManager;
@@ -45,6 +49,15 @@ public class DG extends JavaPlugin {
 
 	//GITHUB test :D
 	
+	/**
+	 * 		TO-DO
+	 * 		- add the end of stage
+	 * 		- skills sound
+	 * 		- party ***--
+	 * 		- skill shop
+	 * 		- dungeon gui
+	 */
+	
 	public DungeonManager dm;
 	public DGPlayerManager dpm;
 	public GuiManager invm;
@@ -53,6 +66,7 @@ public class DG extends JavaPlugin {
 	public SkillManager sm;
 	public QueueManager qm;
 	public FileManager fm;
+	public PartyManager parm;
 	public VolatileCodeEnabled_v1_8_R3 nms;
 	
 	public Location lobby;
@@ -75,6 +89,7 @@ public class DG extends JavaPlugin {
 		sm = new SkillManager();
 		qm = new QueueManager();
 		fm = new FileManager();
+		parm = new PartyManager();
 		nms = new VolatileCodeEnabled_v1_8_R3();
 		
 		lobby = Bukkit.getWorld("DG_lobby").getSpawnLocation();
@@ -83,6 +98,7 @@ public class DG extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
 		Bukkit.getPluginManager().registerEvents(invm, this);
 		Bukkit.getPluginManager().registerEvents(new SkillListener(), this);
+		Bukkit.getPluginManager().registerEvents(new PartyListener(), this);
 		
 		//items
 		ItemManager.AddAllItems();
@@ -182,6 +198,29 @@ public class DG extends JavaPlugin {
 			qm.addMe(p, DungeonType.ST_E);
 			//qm.stronghold_easy.add(p.getUniqueId());
 			p.sendMessage("QUEUE!");
+		}else if(label.equalsIgnoreCase("party")){
+			Player p = (Player) sender;
+			if(args.length > 0){
+				if(args[0].equalsIgnoreCase("create")){
+					if(args.length > 1){
+						parm.create(p, args[1]);
+						p.sendMessage(ChatColor.GREEN + "Party created name : " + ChatColor.WHITE + "" + ChatColor.ITALIC + args[1]);
+						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1f, 1f);
+						return true;
+					}else{
+						p.sendMessage("/party create [name]");
+						return true;
+					}
+				}
+			}
+			
+			Party par = parm.getParty(p);
+			if(par != null){
+				p.openInventory(par.menu);
+				p.playSound(p.getLocation(), Sound.CHICKEN_EGG_POP, 1f, 1f);
+			}else{
+				p.sendMessage("You're not in the party. /party create [name] to create.");
+			}
 		}
 		return false;
 	}

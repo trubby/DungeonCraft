@@ -1,5 +1,6 @@
 package Trubby.co.th.Queue;
 
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.UUID;
 
@@ -12,11 +13,16 @@ import net.md_5.bungee.api.ChatColor;
 
 public class QueueTask extends BukkitRunnable{
 	
+	ArrayList<String> randomLoadingText = new ArrayList<>();//TODO move to somewhere else
+	
 	Random ran = new Random();
+	int minPlayer = 2;
 	
 	Queue q;
 	public QueueTask(Queue q) {
 		this.q = q;
+		
+		randomLoadingText.add("Are you ready?");
 	}
 	
 	boolean generating = false;
@@ -52,7 +58,7 @@ public class QueueTask extends BukkitRunnable{
 			return;
 		}
 		
-		if(q.players.size() > 1){
+		if(q.players.size() >= (minPlayer)){
 			generating = true;
 		}
 		sendTitleWaiting();

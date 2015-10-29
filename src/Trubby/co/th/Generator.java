@@ -326,17 +326,16 @@ public class Generator {
 			Location min = new Location(gc.myBuildLoc.getWorld(), gc.min.getX(), gc.min.getY(), gc.min.getZ());//TODO test
 			Location max = new Location(gc.myBuildLoc.getWorld(), gc.max.getX(), gc.max.getY(), gc.max.getZ());//TODO test
 			
-			gc.myBuildLoc.clone().add(0, 2, 0).getBlock().setType(Material.REDSTONE_BLOCK);
-			
-			min.getBlock().setType(Material.MELON_BLOCK);
-			max.getBlock().setType(Material.GLOWSTONE);
+			//gc.myBuildLoc.clone().add(0, 2, 0).getBlock().setType(Material.REDSTONE_BLOCK);
+			//min.getBlock().setType(Material.MELON_BLOCK);
+			//max.getBlock().setType(Material.GLOWSTONE);
 			
 			for(Location spawnLoc : gc.spawners){
 				if(spawnLoc.getBlock().getType() != Material.MOB_SPAWNER){
 					Bukkit.broadcastMessage(i + " wrong ");
 					spawnLoc.getBlock().setType(Material.GLASS);//TODO test
 				}else{
-					spawnLoc.getBlock().setType(Material.BEACON);
+					spawnLoc.getBlock().setType(Material.AIR);
 				}
 			}
 		}

@@ -3,11 +3,13 @@ package Trubby.co.th.Util;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.md_5.bungee.api.ChatColor;
-
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
+
+import net.md_5.bungee.api.ChatColor;
 
 public class ItemUtil {
 	
@@ -80,5 +82,31 @@ public class ItemUtil {
 		
 		return is;
 	}
-
+	
+	public static ItemStack getHead(Player p, boolean leader){
+		ItemStack is = new ItemStack(Material.SKULL_ITEM, 1, (short)3);
+        SkullMeta meta1 = (SkullMeta)is.getItemMeta();
+        meta1.setOwner(p.getName());
+        is.setItemMeta(meta1);
+        
+        ItemMeta im = is.getItemMeta();
+        if(leader){
+        	im.setDisplayName(ChatColor.ITALIC + "" + p.getName() + ChatColor.YELLOW + "" + ChatColor.BOLD + " Leader");
+        }else{
+        	im.setDisplayName(ChatColor.ITALIC + "" + p.getName());
+        }
+        
+		List<String> lores = new ArrayList<String>();
+		if(leader){
+			lores.add(ChatColor.DARK_GRAY + "Leader");
+		}else{
+			lores.add(ChatColor.DARK_GRAY + "Member");
+		}
+		
+		im.setLore(lores);
+		is.setItemMeta(im);
+        
+        return is;
+	}
+	
 }
