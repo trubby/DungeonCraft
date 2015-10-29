@@ -41,11 +41,31 @@ public class Party {
 	// 9 10 11 12 13 14 15 16 17
 	public void updatePlayers(){
 		
-		int i = 1;
-		for(DGPlayer dgp : players){
+		int count = 1;
+		for (int i = 0; i < 4; i++) {
+			if(i + 1 > players.size()){
+				menu.setItem(11 + count, new ItemStack(Material.AIR));
+				count++;
+				Bukkit.broadcastMessage("1");
+				return;
+			}else{
+				Bukkit.broadcastMessage("2");
+				DGPlayer dgp = players.get(i);
+				if(dgp.p.getName() == leader){
+					menu.setItem(4, ItemUtil.getHead(dgp.p, true));
+				}else{
+					menu.setItem(11 + count, ItemUtil.getHead(dgp.p, false));
+					count++;
+				}
+			}
+		}
+		
+		/*for(DGPlayer dgp : players){
+			Bukkit.broadcastMessage("test");
 			if(dgp.p.getName() == leader){
 				menu.setItem(4, ItemUtil.getHead(dgp.p, true));
 			}else{
+				
 				switch (i) {
 				case 1: menu.setItem(12, ItemUtil.getHead(dgp.p, true));i++; break;
 				case 2: menu.setItem(13, ItemUtil.getHead(dgp.p, true));i++; break;
@@ -53,7 +73,7 @@ public class Party {
 				default:break;
 				}
 			}
-		}
+		}*/
 	}
 	
 	public void changeLeader(Player p){

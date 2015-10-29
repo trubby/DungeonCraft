@@ -29,7 +29,7 @@ public class SmokeBomb {
 	long requireCooldown = 1000 * 5; //cooldown time
 	int manaCost = 10;
 	
-	public void use(Player p){
+	public void use(final Player p){
 		
 		//	COOLDOWN CHECK
 		if(cooldown.containsKey(p.getUniqueId())){

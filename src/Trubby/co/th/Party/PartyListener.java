@@ -1,6 +1,7 @@
 package Trubby.co.th.Party;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,17 +17,23 @@ public class PartyListener implements Listener{
 
 	@EventHandler
 	public void onClickPartyInv(InventoryClickEvent e){
-		if(e.getInventory().getName().equalsIgnoreCase(ChatColor.DARK_GRAY + "Party > ")){
+		if(e.getInventory().getName().startsWith(ChatColor.DARK_GRAY + "Party > ")){
 			e.setCancelled(true);
 			if(e.getClickedInventory() == e.getWhoClicked().getOpenInventory().getTopInventory()){
-				
+				Player p = (Player) e.getWhoClicked();
 				if(e.getSlot() == 9){
-					parm.typingName.add(e.getWhoClicked().getUniqueId());
-					e.getWhoClicked().sendMessage(ChatColor.GREEN + "Please type the name of player you want to invite.");
+					if(parm.typingName.contains(p.getUniqueId())){
+						p.sendMessage(ChatColor.GREEN + "Type the name of player you want to invite."); //TODO text
+						return;
+					}
+					parm.typingName.add(p.getUniqueId());
+					p.sendMessage(ChatColor.GREEN + "Please type the name of player you want to invite.");
+					p.closeInventory();
+					p.playSound(p.getLocation(), Sound.CLICK, 1f, 1f);
 				}else if(e.getSlot() == 17){
-					Player p = (Player) e.getWhoClicked();
 					Party currentParty = parm.getParty(p);
 					parm.removePlayer(p, currentParty);
+					p.playSound(p.getLocation(), Sound.CLICK, 1f, 1f);
 				}
 			}
 		}

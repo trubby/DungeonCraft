@@ -341,7 +341,7 @@ public class PlayerListener implements Listener{
 		if ((e.getFrom().getBlockX() != e.getTo().getBlockX()) || (e.getFrom().getBlockZ() != e.getTo().getBlockZ())) {
 			Player p = e.getPlayer();
 		
-			ArmorStand as = (ArmorStand) p.getWorld().spawnEntity(p.getLocation().add(0, -1.4, 0), EntityType.ARMOR_STAND);
+			final ArmorStand as = (ArmorStand) p.getWorld().spawnEntity(p.getLocation().add(0, -1.4, 0), EntityType.ARMOR_STAND);
 			as.setVisible(false);
 			as.setGravity(false);
 			as.setHeadPose(new EulerAngle(-1.5, 0, 0));

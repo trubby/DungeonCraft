@@ -17,7 +17,7 @@ public class PartyManager {
 
 	ArrayList<Party> partys = new ArrayList<>();
 	ArrayList<UUID> typingName = new ArrayList<>();
-	HashMap<Player, Party> inviting = new HashMap<>();
+	public HashMap<UUID, Party> inviting = new HashMap<>();
 
 	public Party getParty(Player p) {
 
@@ -34,17 +34,17 @@ public class PartyManager {
 		return null;
 	}
 
-	public void invite(Player p, Party party) {
-
-		p.sendMessage(new ComponentBuilder("[Yes] ").color(ChatColor.GREEN).bold(true)
-				.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Join party! : ").color(ChatColor.GRAY).append(party.name).color(ChatColor.YELLOW).create() ))
-				.event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "partyaccept"))
+	public void invite(Player p, Party party) { // Party >> tub_ invite you to join party [Yes] [No]
+		p.spigot().sendMessage(new ComponentBuilder("[YES] ").color(ChatColor.GREEN).bold(true)
+				.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Join party! : ").color(ChatColor.GREEN).append(party.name).color(ChatColor.YELLOW).create() ))
+				.event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/party accept"))
 				
-				.append("[No]").color(ChatColor.GREEN).bold(true)
-				.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Decline party invite!").color(ChatColor.GRAY).create() ))
-				.event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "partydecline"))
-				.create() + "");
+				.append("[NO]").color(ChatColor.RED).bold(true)
+				.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Decline party invite!").color(ChatColor.RED).create() ))
+				.event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/party decline"))
+				.create());
 
+		inviting.put(p.getUniqueId(), party);
 	}
 	
 	public void create(Player p, String name){
@@ -54,6 +54,11 @@ public class PartyManager {
 	}
 	
 	public void addPlayer(Player p, Party party){
+		if(party.players.size() > 4){
+			p.sendMessage(ChatColor.RED + "This party is full!");
+			return;
+		}
+		
 		party.players.add(DG.plugin.dpm.getDGPlayer(p));
 		
 		for(DGPlayer dgp : party.players){
@@ -68,7 +73,7 @@ public class PartyManager {
 		p.sendMessage(ChatColor.RED + "You left the party.");
 		
 		for(DGPlayer dgp : party.players){
-			dgp.p.sendMessage(ChatColor.GREEN + p.getName() + " has left the party.");
+			dgp.p.sendMessage(ChatColor.RED + p.getName() + " has left the party.");
 		}
 		
 		party.updatePlayers();

@@ -211,6 +211,14 @@ public class DG extends JavaPlugin {
 						p.sendMessage("/party create [name]");
 						return true;
 					}
+				}else if(args[0].equalsIgnoreCase("accept")){
+					if(parm.inviting.containsKey(p.getUniqueId())){
+						Party party = parm.inviting.get(p.getUniqueId());
+						parm.addPlayer(p, party);
+						parm.inviting.remove(p.getUniqueId());
+					}
+				}else if(args[0].equalsIgnoreCase("decline")){
+					
 				}
 			}
 			
