@@ -24,13 +24,13 @@ public class ItemUtil {
 		if(is.hasItemMeta()){
 			ItemMeta im = is.getItemMeta();
 			List<String> lores = im.getLore();
-			lores.add(0, ChatColor.YELLOW + "Price: " + ChatColor.WHITE + price + ChatColor.YELLOW + " gold");
+			lores.add(0, ChatColor.DARK_GRAY + "Price: " + ChatColor.WHITE + price + ChatColor.DARK_GRAY + " gold");
 			im.setLore(lores);
 			is.setItemMeta(im);
 		}else{
 			ItemMeta im = is.getItemMeta();
 			List<String> lores = new ArrayList<String>();
-			lores.add(ChatColor.YELLOW + "Price: " + ChatColor.WHITE + price + ChatColor.YELLOW + " gold");
+			lores.add(ChatColor.DARK_GRAY + "Price: " + ChatColor.WHITE + price + ChatColor.DARK_GRAY + " gold");
 			im.setLore(lores);
 			is.setItemMeta(im);
 		}
@@ -48,13 +48,13 @@ public class ItemUtil {
 		if(is.hasItemMeta()){
 			ItemMeta im = is.getItemMeta();
 			List<String> lores = im.getLore();
-			lores.add(0, ChatColor.GREEN + "Current Item");
+			lores.add(0, ChatColor.GREEN + "" + ChatColor.UNDERLINE + "Current Item");
 			im.setLore(lores);
 			is.setItemMeta(im);
 		}else{
 			ItemMeta im = is.getItemMeta();
 			List<String> lores = new ArrayList<String>();
-			lores.add(ChatColor.GREEN + "Current Item");
+			lores.add(ChatColor.GREEN + "" + ChatColor.UNDERLINE + "Current Item");
 			im.setLore(lores);
 			is.setItemMeta(im);
 		}
@@ -77,7 +77,7 @@ public class ItemUtil {
 		ItemStack is = new ItemStack(Material.GOLD_NUGGET);
 		
 		ItemMeta im = is.getItemMeta();
-		im.setDisplayName(ChatColor.YELLOW + "Your gold : " + gold);
+		im.setDisplayName(ChatColor.YELLOW + "" + ChatColor.UNDERLINE + "Your gold" + ChatColor.YELLOW + " > " + gold);
 		is.setItemMeta(im);
 		
 		return is;
@@ -107,6 +107,30 @@ public class ItemUtil {
 		is.setItemMeta(im);
         
         return is;
+	}
+	
+public static ItemStack addHealth(ItemStack isold, double price, double health, boolean isUpgrade){
+		
+		ItemStack is = isold.clone();
+		
+		if(isUpgrade){
+			ItemMeta im = is.getItemMeta();
+			im.setDisplayName(ChatColor.WHITE + "Upgrade");
+			List<String> lores = new ArrayList<>();
+			lores.add(ChatColor.DARK_GRAY + "Price: " + ChatColor.WHITE + price + ChatColor.DARK_GRAY + " gold");
+			lores.add(ChatColor.GRAY + "Health : " + ChatColor.RED + health);
+			im.setLore(lores);
+			is.setItemMeta(im);
+		}else{
+			ItemMeta im = is.getItemMeta();
+			im.setDisplayName(ChatColor.WHITE + "Your Health");
+			List<String> lores = new ArrayList<>();
+			lores.add(ChatColor.GRAY + "Health : " + ChatColor.RED + health);
+			im.setLore(lores);
+			is.setItemMeta(im);
+		}
+
+		return is;
 	}
 	
 }

@@ -11,6 +11,8 @@ public class RunningTask extends BukkitRunnable{
 		
 	}
 	
+	int cooldown = 0;
+	
 	@Override
 	public void run() {
 		if(dgp.p.isSprinting()){
@@ -19,7 +21,6 @@ public class RunningTask extends BukkitRunnable{
 		}else{
 			this.cancel();
 			dgp.isSprinting = false;
-			
 		}
 	}
 	

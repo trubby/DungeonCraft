@@ -20,8 +20,9 @@ public class DGPlayer {
 	public int chestLevel = 0;
 	public int legLevel = 0;
 	public int bootsLevel = 0;
-
-	public int maxHealth = 8;
+	//[][][][][][][][][][]
+	//[][][][][][][][][][]
+	public int healthLevel = 1;
 	
 	public int maxMana = 10; //TODO UPDATE MANA
 	public int mana = 10;
@@ -46,9 +47,16 @@ public class DGPlayer {
 		p.getInventory().clear();
 		InvManager.updateAllInv(this);
 		
-		p.setHealthScale(maxHealth);
-		p.setMaxHealth(maxHealth);
-		p.setHealth(maxHealth);
+		updateHealth(true);
+	}
+	
+	//UPDATE HEALTH
+	public void updateHealth(boolean heal){
+		p.setHealthScale(healthLevel + 7);
+		p.setMaxHealth(healthLevel + 7);
+		if(heal){
+			p.setHealth(healthLevel + 7);
+		}
 	}
 	
 	//UPDATE EQUIPMENTS

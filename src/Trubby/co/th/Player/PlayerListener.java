@@ -1,4 +1,4 @@
-package Trubby.co.th.Listener;
+package Trubby.co.th.Player;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -23,6 +23,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.PlayerToggleSprintEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.util.EulerAngle;
@@ -32,8 +33,6 @@ import Trubby.co.th.DG;
 import Trubby.co.th.Map.Dungeon;
 import Trubby.co.th.Map.Room;
 import Trubby.co.th.Particle.ParticleEffect;
-import Trubby.co.th.Player.DGPlayer;
-import Trubby.co.th.Player.Economy;
 import Trubby.co.th.Util.ActionBarAPI;
 import net.md_5.bungee.api.ChatColor;
 
@@ -160,11 +159,11 @@ public class PlayerListener implements Listener{
 	 * 		SPRINTING STAMINA
 	 */
 	@EventHandler
-	public void onPlayerMove(PlayerMoveEvent e){
-		if ((e.getFrom().getBlockX() != e.getTo().getBlockX()) || (e.getFrom().getBlockZ() != e.getTo().getBlockZ())) {
+	public void onPlayerMove(PlayerToggleSprintEvent e){
+		//if ((e.getFrom().getBlockX() != e.getTo().getBlockX()) || (e.getFrom().getBlockZ() != e.getTo().getBlockZ())) {
 			Player p = e.getPlayer();
 			
-			if(!p.isSprinting())return;
+			//if(!p.isSprinting())return;
 			
 			DGPlayer dgp = DG.plugin.dpm.getDGPlayer(p);
 			if(dgp != null){
@@ -172,7 +171,6 @@ public class PlayerListener implements Listener{
 					dgp.runningTask();
 				}
 			}
-		}
 	}
 	
 	/*

@@ -30,6 +30,7 @@ public class GuiManager implements Listener{
 	
 	String equipInvName = "  Current                Upgrade";
 	
+	// --------------- EQUIP. UPGRADE ---------------
 	public void openEquipUpgrade(Player p){
 		DGPlayer dgp = DG.plugin.dpm.getDGPlayer(p);
 
@@ -132,6 +133,7 @@ public class GuiManager implements Listener{
 			return;
 		}
 		
+		//EQUIPMENT UPGRADE INVENTORY
 		if(e.getClickedInventory().getTitle().equalsIgnoreCase(equipInvName)){
 			Player p = (Player) e.getWhoClicked();
 			e.setCancelled(true);

@@ -33,10 +33,34 @@ public class Party {
 		menu = Bukkit.createInventory(null, 18, ChatColor.DARK_GRAY + "Party > " + ChatColor.BLACK + name);
 		menu.setItem(9, inviteButton());
 		menu.setItem(17, leaveButton());
+		decorate();
+		updateInfo();
 		
 		updatePlayers();
 	}
 	
+	private void updateInfo() {
+		ItemStack is = new ItemStack(Material.COMPASS);
+		ItemMeta im = is.getItemMeta();
+		im.setDisplayName(ChatColor.RED + "Party " + ChatColor.GRAY + "information");
+		List<String> lores = new ArrayList<>();
+		lores.add(ChatColor.DARK_GRAY + "Name : " + ChatColor.WHITE + name);
+		lores.add(ChatColor.DARK_GRAY + "Leader : " + ChatColor.WHITE  + leader);
+		lores.add(ChatColor.DARK_GRAY + "Member : " + ChatColor.WHITE  + players.size() + "/" + 4);
+		im.setLore(lores);
+		is.setItemMeta(im);
+		
+		menu.setItem(0, is);
+		menu.setItem(8, new ItemStack(Material.CHEST));
+	}
+
+	private void decorate() {
+		menu.setItem(3, decoratedGlass());
+		menu.setItem(5, decoratedGlass());
+		menu.setItem(11, decoratedGlass());
+		menu.setItem(15, decoratedGlass());
+	}
+
 	// 0 1  2  3  4  5  6  7  8
 	// 9 10 11 12 13 14 15 16 17
 	public void updatePlayers(){
@@ -46,10 +70,8 @@ public class Party {
 			if(i + 1 > players.size()){
 				menu.setItem(11 + count, new ItemStack(Material.AIR));
 				count++;
-				Bukkit.broadcastMessage("1");
 				return;
 			}else{
-				Bukkit.broadcastMessage("2");
 				DGPlayer dgp = players.get(i);
 				if(dgp.p.getName() == leader){
 					menu.setItem(4, ItemUtil.getHead(dgp.p, true));
@@ -59,6 +81,8 @@ public class Party {
 				}
 			}
 		}
+		
+		updateInfo();
 		
 		/*for(DGPlayer dgp : players){
 			Bukkit.broadcastMessage("test");
@@ -116,6 +140,16 @@ public class Party {
 		
 		is.setItemMeta(im);
 		
+		return is;
+	}
+	
+	public ItemStack decoratedGlass(){
+		ItemStack is = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)7);
+		
+		ItemMeta im = is.getItemMeta();
+		im.setDisplayName(ChatColor.RED + "");
+		
+		is.setItemMeta(im);
 		return is;
 	}
 	

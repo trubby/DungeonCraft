@@ -32,12 +32,6 @@ public class InvManager {
 		//Update Skills
 	}
 	
-	public static void updateSkills(DGPlayer dgp) {
-		//TODO
-		dgp.p.getInventory().setItem(2, DG.plugin.sm.hook.item());
-		dgp.p.getInventory().setItem(3, DG.plugin.sm.smokeBomb.item());
-	}
-
 	//GOLD
 	public static void updateGoldSlot(DGPlayer dgp, boolean doRefresh){
 		dgp.p.getInventory().setItem(17, ItemUtil.getGold(dgp.gold));
@@ -101,6 +95,12 @@ public class InvManager {
 		if(is.getType() != Material.STAINED_GLASS_PANE){
 			dgp.p.getInventory().setItem(8, is);
 		}
+	}
+	
+	public static void updateSkills(DGPlayer dgp) {
+		//TODO
+		dgp.p.getInventory().setItem(2, DG.plugin.sm.hook.item());
+		dgp.p.getInventory().setItem(3, DG.plugin.sm.smokeBomb.item());
 	}
 
 }

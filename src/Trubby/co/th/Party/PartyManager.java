@@ -35,6 +35,7 @@ public class PartyManager {
 	}
 
 	public void invite(Player p, Party party) { // Party >> tub_ invite you to join party [Yes] [No]
+		
 		p.spigot().sendMessage(new ComponentBuilder("[YES] ").color(ChatColor.GREEN).bold(true)
 				.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Join party! : ").color(ChatColor.GREEN).append(party.name).color(ChatColor.YELLOW).create() ))
 				.event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/party accept"))

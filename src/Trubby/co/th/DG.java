@@ -22,17 +22,19 @@ import org.bukkit.util.EulerAngle;
 
 import Trubby.co.th.IO.FileManager;
 import Trubby.co.th.Inventory.GuiManager;
+import Trubby.co.th.Inventory.HealthGui;
 import Trubby.co.th.Inventory.ItemManager;
-import Trubby.co.th.Listener.MobsListener;
-import Trubby.co.th.Listener.PlayerListener;
+import Trubby.co.th.Inventory.NPCListener;
 import Trubby.co.th.Map.Dungeon;
 import Trubby.co.th.Map.DungeonManager;
 import Trubby.co.th.Mobs.MobManager;
+import Trubby.co.th.Mobs.MobsListener;
 import Trubby.co.th.Party.Party;
 import Trubby.co.th.Party.PartyListener;
 import Trubby.co.th.Party.PartyManager;
 import Trubby.co.th.Player.DGPlayer;
 import Trubby.co.th.Player.DGPlayerManager;
+import Trubby.co.th.Player.PlayerListener;
 import Trubby.co.th.Queue.QueueManager;
 import Trubby.co.th.Queue.QueueManager.DungeonType;
 import Trubby.co.th.Skill.SkillListener;
@@ -51,11 +53,19 @@ public class DG extends JavaPlugin {
 	
 	/**
 	 * 		TO-DO
+	 * 		- party ***--
 	 * 		- add the end of stage
 	 * 		- skills sound
-	 * 		- party ***--
+	 * 		- more skills
 	 * 		- skill shop
 	 * 		- dungeon gui
+	 * 		- upgrades gui
+	 * 		- SQL
+	 * 		- logout listener remove : DGplayer, Party
+	 * 		- link party with queue
+	 * 
+	 * 	note
+	 *  PacketType.Play.Client.WINDOW_CLICK
 	 */
 	
 	public DungeonManager dm;
@@ -67,6 +77,7 @@ public class DG extends JavaPlugin {
 	public QueueManager qm;
 	public FileManager fm;
 	public PartyManager parm;
+	public HealthGui hgui;
 	public VolatileCodeEnabled_v1_8_R3 nms;
 	
 	public Location lobby;
@@ -91,12 +102,15 @@ public class DG extends JavaPlugin {
 		fm = new FileManager();
 		parm = new PartyManager();
 		nms = new VolatileCodeEnabled_v1_8_R3();
+		hgui = new HealthGui();
 		
 		lobby = Bukkit.getWorld("DG_lobby").getSpawnLocation();
 		
 		Bukkit.getPluginManager().registerEvents(new MobsListener(), this);
 		Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
 		Bukkit.getPluginManager().registerEvents(invm, this);
+		Bukkit.getPluginManager().registerEvents(hgui, this);
+		Bukkit.getPluginManager().registerEvents(new NPCListener(), this);
 		Bukkit.getPluginManager().registerEvents(new SkillListener(), this);
 		Bukkit.getPluginManager().registerEvents(new PartyListener(), this);
 		
@@ -289,7 +303,7 @@ public class DG extends JavaPlugin {
 					}
 				}
 			}
-		}, 10L, 10L);
+		}, 14L, 14L);
 		
 	}
 	
