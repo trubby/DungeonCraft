@@ -21,7 +21,7 @@ import net.md_5.bungee.api.ChatColor;
 
 public class HealthGui implements Listener{
 
-	String healthInvName = "      Current        Upgrade";
+	String healthInvName = "      Current        " + ChatColor.RED + "Upgrade";
 	ItemStack potionCurrent;
 	ItemStack potionUpgrade;
 	

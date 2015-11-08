@@ -428,7 +428,7 @@ public class Generator {
 		}
 	}
 
-	public World create(String name) {
+	public World create(String name, boolean async) {
 		World world = Bukkit.getServer().getWorld(name);
 		if (world == null) {
 			
@@ -436,17 +436,49 @@ public class Generator {
 				
 				@Override
 				public void run() {
-					System.out.println("Loading world '" + name + "'.");
-					WorldCreator arenaWorldCreator = new WorldCreator(name);
-					arenaWorldCreator.generateStructures(false);
-					arenaWorldCreator.generator(new VoidGenerator());
-					arenaWorldCreator.type(WorldType.FLAT);
-					arenaWorldCreator.environment(Environment.NETHER);
-					arenaWorldCreator.seed(0);
-					arenaWorldCreator.createWorld();
+					Bukkit.getScheduler().runTaskAsynchronously(DG.plugin, new Runnable() {
+						
+						@Override
+						public void run() {
+							System.out.println("Loading world '" + name + "'.");
+							WorldCreator arenaWorldCreator = new WorldCreator(name);
+							arenaWorldCreator.generateStructures(false);
+							arenaWorldCreator.generator(new VoidGenerator());
+							arenaWorldCreator.type(WorldType.FLAT);
+							arenaWorldCreator.environment(Environment.NETHER);
+							arenaWorldCreator.seed(0);
+							arenaWorldCreator.createWorld();
+						}
+					});
 				}
 			});
 			
+			System.out.println("Done loading world '" + name + "'.");
+		} else {
+			System.out.println("The world '" + name + "' was already loaded.");
+		}
+		world.setGameRuleValue("doMobSpawning", "false");
+		world.setGameRuleValue("doMobLoot", "false");
+		world.setGameRuleValue("keepInventory", "true");
+		world.setGameRuleValue("mobGriefing", "false");
+		world.setAutoSave(false);
+		world.getBlockAt(0, 45, 0).setType(Material.STONE);
+		world.setSpawnLocation(0, 46, 0);
+
+		return world;
+	}
+	
+	public World create(String name) {
+		World world = Bukkit.getServer().getWorld(name);
+		if (world == null) {
+			System.out.println("Loading world '" + name + "'.");
+			WorldCreator arenaWorldCreator = new WorldCreator(name);
+			arenaWorldCreator.generateStructures(false);
+			arenaWorldCreator.generator(new VoidGenerator());
+			arenaWorldCreator.type(WorldType.FLAT);
+			arenaWorldCreator.environment(Environment.NETHER);
+			arenaWorldCreator.seed(0);
+			world = arenaWorldCreator.createWorld();
 			System.out.println("Done loading world '" + name + "'.");
 		} else {
 			System.out.println("The world '" + name + "' was already loaded.");

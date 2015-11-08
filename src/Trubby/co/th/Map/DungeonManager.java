@@ -74,7 +74,7 @@ public class DungeonManager {
 	}
 	
 	public Dungeon loadDungeon(String kindName, String worldName, int level){//TODO ADD LEVEL OR MODE OR MAP
-		DG.plugin.gen.create(worldName);
+		DG.plugin.gen.create(worldName, true);
 		
 		File folder = new File(DG.plugin.getDataFolder(), kindName);
 		File f = new File(folder, worldName + ".yml");

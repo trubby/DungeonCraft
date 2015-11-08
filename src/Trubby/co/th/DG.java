@@ -215,7 +215,12 @@ public class DG extends JavaPlugin {
 			//qm.stronghold_easy.add(p.getUniqueId());
 			p.sendMessage("QUEUE!");
 		}else if(label.equalsIgnoreCase("test")){
-			
+			dm.loadDungeon("Stronghold","Stronghold1", 1);
+			dm.loadDungeon("Stronghold","Stronghold2", 1);
+			dm.loadDungeon("Stronghold","Stronghold3", 1);
+			dm.loadDungeon("Stronghold","Stronghold4", 1);
+			dm.loadDungeon("Stronghold","Stronghold5", 1);
+			//dm.loadDungeon("Stronghold","Stronghold2", 1);
 		}else if(label.equalsIgnoreCase("party")){
 			Player p = (Player) sender;
 			if(args.length > 0){
