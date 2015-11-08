@@ -29,18 +29,18 @@ public class spawnEffect extends BukkitRunnable {
 		counter++;
 		if(counter <= 3){
 			switch (counter) {
-			case 1: new CircleEffect(0.3f, 8).play(spawnLoc);
+			case 1: new CircleEffect(1f, 13).play(spawnLoc);
 				break;
-			case 2: new CircleEffect(0.2f, 8).play(spawnLoc);
+			case 2: new CircleEffect(0.5f, 10).play(spawnLoc);
 				break;
-			case 3: new CircleEffect(0.1f, 8).play(spawnLoc);
+			case 3: new CircleEffect(0.2f, 8).play(spawnLoc);
 				break;
 			default:
 				break;
 			}
 		}else{
 			mm.spawn(spawnLoc, 1); //TODO add entity to room
-			ParticleEffect.FLAME.display(0.5f, 0.5f, 0.5f, 0.2f, 7, spawnLoc.clone().add(0,1,0), 12);
+			ParticleEffect.FLAME.display(0.5f, 0.5f, 0.5f, 0.2f, 7, spawnLoc.clone().add(0,1,0), 16);
 			this.cancel();
 		}
 	}

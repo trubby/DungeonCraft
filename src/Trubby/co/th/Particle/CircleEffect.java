@@ -27,20 +27,20 @@ public class CircleEffect {
 
 		for (int i = 0; i < particles; i++) {
 			
-		Location location = loc;
-		location.subtract(this.xSubtract, this.ySubtract, this.zSubtract);
-		double inc = 6.283185307179586D / this.particles;
-		double angle = this.step * inc;
-		Vector v = new Vector();
-		v.setX(Math.cos(angle) * this.radius);
-		v.setZ(Math.sin(angle) * this.radius);
-		ParticleVectorUtils.rotateVector(v, this.xRotation, this.yRotation, this.zRotation);
-		if (this.enableRotation) {
-			ParticleVectorUtils.rotateVector(v, this.angularVelocityX * this.step, this.angularVelocityY * this.step, this.angularVelocityZ * this.step);
-		}
-		// display(this.particle, location.add(v), 0.0F, 30);
-		ParticleEffect.FLAME.display(0f, 0f, 0f, 0f, 1, location.add(v), 20);
-		this.step += 1.0F;
+			Location location = loc.clone().add(0, 0, -(radius/15));
+			location.subtract(this.xSubtract, this.ySubtract, this.zSubtract);
+			double inc = 6.283185307179586D / this.particles;
+			double angle = this.step * inc;
+			Vector v = new Vector();
+			v.setX(Math.cos(angle) * this.radius);
+			v.setZ(Math.sin(angle) * this.radius);
+			ParticleVectorUtils.rotateVector(v, this.xRotation, this.yRotation, this.zRotation);
+			if (this.enableRotation) {
+				ParticleVectorUtils.rotateVector(v, this.angularVelocityX * this.step, this.angularVelocityY * this.step, this.angularVelocityZ * this.step);
+			}
+			// display(this.particle, location.add(v), 0.0F, 30);
+			ParticleEffect.FLAME.display(0f, 0f, 0f, 0f, 1, location.add(v), 20);
+			this.step += 1.0F;
 		
 		}
 	}

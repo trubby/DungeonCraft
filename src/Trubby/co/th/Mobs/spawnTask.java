@@ -33,7 +33,7 @@ public class spawnTask extends BukkitRunnable {
 		if(counter <= loops){
 			for (int i = 0; i < 2; i++) {
 				
-				Location ranloc = room.spawners.get(ran.nextInt(room.spawners.size()));
+				Location ranloc = room.spawners.get(ran.nextInt(room.spawners.size())).clone().add(0.5, 0, 0.5);
 				MythicMob mm = room.mobs.get(ran.nextInt(room.mobs.size())); 
 				
 				new spawnEffect(room, ranloc, mm).runTaskTimer(DG.plugin, 0L, 12L);

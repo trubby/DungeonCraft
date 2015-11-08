@@ -15,7 +15,15 @@ public class RunningTask extends BukkitRunnable{
 	
 	@Override
 	public void run() {
+		//avoid bug
+		if(dgp.p.getFoodLevel() < 2){
+			dgp.isSprinting = false;
+			this.cancel();
+			return;
+		}
+		
 		if(dgp.p.isSprinting()){
+			
 			dgp.p.setFoodLevel(dgp.p.getFoodLevel() - 1);
 			
 		}else{

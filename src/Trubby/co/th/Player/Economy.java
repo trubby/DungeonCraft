@@ -3,7 +3,7 @@ package Trubby.co.th.Player;
 import org.bukkit.entity.Player;
 
 import Trubby.co.th.DG;
-import Trubby.co.th.Inventory.InvManager;
+import Trubby.co.th.Upgrade.InvManager;
 
 public class Economy {
 	

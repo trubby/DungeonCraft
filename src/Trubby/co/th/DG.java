@@ -20,15 +20,16 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.EulerAngle;
 
+import com.sk89q.worldedit.CuboidClipboard;
+import com.sk89q.worldedit.data.DataException;
+import com.sk89q.worldedit.schematic.SchematicFormat;
+
 import Trubby.co.th.IO.FileManager;
-import Trubby.co.th.Inventory.GuiManager;
-import Trubby.co.th.Inventory.HealthGui;
-import Trubby.co.th.Inventory.ItemManager;
-import Trubby.co.th.Inventory.NPCListener;
 import Trubby.co.th.Map.Dungeon;
 import Trubby.co.th.Map.DungeonManager;
 import Trubby.co.th.Mobs.MobManager;
 import Trubby.co.th.Mobs.MobsListener;
+import Trubby.co.th.NPC.NPCListener;
 import Trubby.co.th.Party.Party;
 import Trubby.co.th.Party.PartyListener;
 import Trubby.co.th.Party.PartyManager;
@@ -39,12 +40,11 @@ import Trubby.co.th.Queue.QueueManager;
 import Trubby.co.th.Queue.QueueManager.DungeonType;
 import Trubby.co.th.Skill.SkillListener;
 import Trubby.co.th.Skill.SkillManager;
+import Trubby.co.th.Upgrade.EquipGui;
+import Trubby.co.th.Upgrade.HealthGui;
+import Trubby.co.th.Upgrade.ItemManager;
 import Trubby.co.th.Util.VolatileCodeEnabled_v1_8_R3;
 import net.md_5.bungee.api.ChatColor;
-
-import com.sk89q.worldedit.CuboidClipboard;
-import com.sk89q.worldedit.data.DataException;
-import com.sk89q.worldedit.schematic.SchematicFormat;
 
 @SuppressWarnings("deprecation")
 public class DG extends JavaPlugin {
@@ -55,29 +55,31 @@ public class DG extends JavaPlugin {
 	 * 		TO-DO
 	 * 		- party ***--
 	 * 		- add the end of stage
+	 * 		- ===== skill =====
 	 * 		- skills sound
 	 * 		- more skills
 	 * 		- skill shop
+	 * 		- =================
 	 * 		- dungeon gui
-	 * 		- upgrades gui
+	 * 		- upgrades gui ***__
 	 * 		- SQL
 	 * 		- logout listener remove : DGplayer, Party
 	 * 		- link party with queue
-	 * 
+	 * 		- death cam
 	 * 	note
 	 *  PacketType.Play.Client.WINDOW_CLICK
 	 */
 	
 	public DungeonManager dm;
 	public DGPlayerManager dpm;
-	public GuiManager invm;
+	public EquipGui egui;
+	public HealthGui hgui;
 	public Generator gen;
 	public MobManager mm;
 	public SkillManager sm;
 	public QueueManager qm;
 	public FileManager fm;
 	public PartyManager parm;
-	public HealthGui hgui;
 	public VolatileCodeEnabled_v1_8_R3 nms;
 	
 	public Location lobby;
@@ -94,7 +96,7 @@ public class DG extends JavaPlugin {
 
 		dm = new DungeonManager();
 		dpm = new DGPlayerManager();
-		invm = new GuiManager();
+		egui = new EquipGui();
 		gen = new Generator();
 		mm = new MobManager();
 		sm = new SkillManager();
@@ -108,7 +110,7 @@ public class DG extends JavaPlugin {
 		
 		Bukkit.getPluginManager().registerEvents(new MobsListener(), this);
 		Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
-		Bukkit.getPluginManager().registerEvents(invm, this);
+		Bukkit.getPluginManager().registerEvents(egui, this);
 		Bukkit.getPluginManager().registerEvents(hgui, this);
 		Bukkit.getPluginManager().registerEvents(new NPCListener(), this);
 		Bukkit.getPluginManager().registerEvents(new SkillListener(), this);
@@ -163,7 +165,7 @@ public class DG extends JavaPlugin {
 				p.sendMessage("null");
 			}*/
 			
-			invm.openEquipUpgrade(p);
+			egui.openEquipUpgrade(p);
 
 		}else if(label.equalsIgnoreCase("dg")) {
 			
@@ -212,6 +214,8 @@ public class DG extends JavaPlugin {
 			qm.addMe(p, DungeonType.ST_E);
 			//qm.stronghold_easy.add(p.getUniqueId());
 			p.sendMessage("QUEUE!");
+		}else if(label.equalsIgnoreCase("test")){
+			
 		}else if(label.equalsIgnoreCase("party")){
 			Player p = (Player) sender;
 			if(args.length > 0){

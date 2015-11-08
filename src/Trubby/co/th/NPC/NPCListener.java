@@ -1,4 +1,4 @@
-package Trubby.co.th.Inventory;
+package Trubby.co.th.NPC;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -21,7 +21,7 @@ public class NPCListener implements Listener{
 				DG.plugin.hgui.openHealthGui(dgp);
 			}else if(ChatColor.stripColor(e.getRightClicked().getCustomName()).equalsIgnoreCase("Equip Upgrade!")){
 				e.setCancelled(true);
-				DG.plugin.invm.openEquipUpgrade(e.getPlayer());
+				DG.plugin.egui.openEquipUpgrade(e.getPlayer());
 			}
 		}
 	}

@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import Trubby.co.th.DG;
-import Trubby.co.th.Inventory.InvManager;
+import Trubby.co.th.Upgrade.InvManager;
 
 public class DGPlayer {
 	

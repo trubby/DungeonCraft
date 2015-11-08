@@ -1,10 +1,11 @@
-package Trubby.co.th.Map;
+package Trubby.co.th.Player;
 
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import Trubby.co.th.Map.Dungeon;
 import net.md_5.bungee.api.ChatColor;
 
 public class ReviveTask extends BukkitRunnable{
@@ -42,9 +43,10 @@ public class ReviveTask extends BukkitRunnable{
 				x = loc.getX();
 				y = loc.getY();
 				z = loc.getZ();
+				as.setCustomName(ChatColor.GREEN + "Reviving (" + counter + ")");
 				return;
 			}else if(counter == 5){
-				as.setCustomName(ChatColor.GREEN + "Reviving " + counter + "...");
+				as.setCustomName(ChatColor.GREEN + "Reviving (" + counter + ")");
 				return;
 			}
 			
@@ -53,9 +55,10 @@ public class ReviveTask extends BukkitRunnable{
 			if(loc.getX() != x || loc.getY() != y || loc.getZ() != z){
 				as.setCustomName(oldString);
 				reviver.sendMessage(ChatColor.RED + "Do not move while reviving!");
+				d.revivingAS.remove(as.getUniqueId());
 				this.cancel();
 			}else{
-				as.setCustomName(ChatColor.GREEN + "Reviving " + counter + "...");
+				as.setCustomName(ChatColor.GREEN + "Reviving (" + counter + ")");
 			}
 			
 		}else{

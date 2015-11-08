@@ -1,4 +1,4 @@
-package Trubby.co.th.Inventory;
+package Trubby.co.th.Upgrade;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,7 +19,7 @@ import Trubby.co.th.Player.DGPlayer;
 import Trubby.co.th.Player.Economy;
 import Trubby.co.th.Util.ItemUtil;
 
-public class GuiManager implements Listener{
+public class EquipGui implements Listener{
 	
 	/** 0  1  2 : 3  4  5 : 6  7  8
 	 *  9  10 11: 12 13 14: 15 16 17
@@ -127,7 +127,7 @@ public class GuiManager implements Listener{
 	}
 	
 	@EventHandler
-	public void onCkickInv(InventoryClickEvent e){
+	public void onEquipInvClick(InventoryClickEvent e){
 		
 		if(e.getClickedInventory() == null){
 			return;

@@ -21,6 +21,7 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.util.EulerAngle;
 
 import Trubby.co.th.DG;
+import Trubby.co.th.Player.ReviveTask;
 import Trubby.co.th.Util.ScoreboardUtils;
 import Trubby.co.th.Util.StrUtil;
 import net.md_5.bungee.api.ChatColor;
@@ -81,6 +82,7 @@ public class Dungeon {
 		as.setGravity(false);
 		as.setCustomName(ChatColor.RED + p.getName() + ChatColor.WHITE + " (Right Click to revive)");
 		as.setCustomNameVisible(true);
+		as.setArms(true);
 		as.setHeadPose(new EulerAngle(-1.4, 0, 0));
 		as.setBodyPose(new EulerAngle(-1.5, 0, 0));
 		as.setRightArmPose(new EulerAngle(-1.4, 0, 0));
@@ -111,11 +113,18 @@ public class Dungeon {
 	}
 	
 	public void revive(Player reviver, Player revived, ArmorStand as){
+		
 		@SuppressWarnings("deprecation")
 		Score score = sb.getObjective(DisplaySlot.SIDEBAR).getScore(revived);
 		if(score.getScore() < 1){
 			reviver.sendMessage(ChatColor.RED + revived.getName() + " has no more life left.");
 			return;
+		}
+		
+		if(revivingAS.contains(as.getUniqueId())){
+			return;
+		}else{
+			revivingAS.add(as.getUniqueId());
 		}
 		
 		new ReviveTask(this, reviver, revived, as).runTaskTimer(DG.plugin, 0, 20);
@@ -130,6 +139,7 @@ public class Dungeon {
 		
 		as.remove();
 		deathBodies.remove(as);
+		revivingAS.remove(as.getUniqueId());
 	}
 	
 	public void tryToUsePortal(){

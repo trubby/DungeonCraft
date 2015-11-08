@@ -1,4 +1,4 @@
-package Trubby.co.th.Inventory;
+package Trubby.co.th.Upgrade;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;

@@ -144,7 +144,7 @@ public class Party {
 	}
 	
 	public ItemStack decoratedGlass(){
-		ItemStack is = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)7);
+		ItemStack is = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)15);
 		
 		ItemMeta im = is.getItemMeta();
 		im.setDisplayName(ChatColor.RED + "");

@@ -67,7 +67,7 @@ public class PartyListener implements Listener{
 					//return;
 				}
 				
-				parm.invite(invited, party);
+				parm.invite(p,invited, party);
 				p.sendMessage(ChatColor.GREEN + "Sent in invitation to " + invited.getName());
 				
 				parm.typingName.remove(p.getUniqueId());

@@ -34,18 +34,22 @@ public class PartyManager {
 		return null;
 	}
 
-	public void invite(Player p, Party party) { // Party >> tub_ invite you to join party [Yes] [No]
-		
-		p.spigot().sendMessage(new ComponentBuilder("[YES] ").color(ChatColor.GREEN).bold(true)
+	public void invite(Player p, Player invited, Party party) { // Party >> tub_ invite you to join party [Yes] [No]
+		invited.sendMessage("-----------------------------------------------------");
+		invited.spigot().sendMessage(new ComponentBuilder(p.getName() + " sent you party invite. Wanna join? >> ").append("[YES] ").color(ChatColor.GREEN).bold(true)
 				.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Join party! : ").color(ChatColor.GREEN).append(party.name).color(ChatColor.YELLOW).create() ))
 				.event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/party accept"))
 				
 				.append("[NO]").color(ChatColor.RED).bold(true)
 				.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Decline party invite!").color(ChatColor.RED).create() ))
 				.event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/party decline"))
+				
+				.append(" (Click)").color(ChatColor.GRAY)
+				.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("YES or NO").color(ChatColor.GRAY).create() ))
+				.event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/party"))
 				.create());
-
-		inviting.put(p.getUniqueId(), party);
+		invited.sendMessage("-----------------------------------------------------");
+		inviting.put(invited.getUniqueId(), party);
 	}
 	
 	public void create(Player p, String name){

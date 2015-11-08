@@ -15,6 +15,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockRedstoneEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityPortalEnterEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
@@ -159,7 +160,7 @@ public class PlayerListener implements Listener{
 	 * 		SPRINTING STAMINA
 	 */
 	@EventHandler
-	public void onPlayerMove(PlayerToggleSprintEvent e){
+	public void onPlayerSprint(PlayerToggleSprintEvent e){
 		//if ((e.getFrom().getBlockX() != e.getTo().getBlockX()) || (e.getFrom().getBlockZ() != e.getTo().getBlockZ())) {
 			Player p = e.getPlayer();
 			
@@ -174,7 +175,7 @@ public class PlayerListener implements Listener{
 	}
 	
 	/*
-	 * 		FORCE DAMAGE CALCULATOR
+	 * 		FORCE DUNGEON DAMAGE CALCULATOR
 	 */
 	@EventHandler
 	public void onAttack(EntityDamageByEntityEvent e){
@@ -240,8 +241,10 @@ public class PlayerListener implements Listener{
 		
 		if(le != null){
 			if(le.getWorld().getName().equalsIgnoreCase("DG_lobby")){
-				if(e.getDamage() > 0){
-					e.setDamage(0);
+				if(e.getCause() != DamageCause.VOID){
+					if(e.getDamage() > 0){
+						e.setDamage(0);
+					}
 				}
 				return;
 			}

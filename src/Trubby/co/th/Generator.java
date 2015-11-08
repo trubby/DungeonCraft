@@ -323,8 +323,8 @@ public class Generator {
 			
 			Bukkit.broadcastMessage(ChatColor.YELLOW + "" + i + ": "  + gc.myBuildLoc.getX() + " " + gc.myBuildLoc.getZ());
 			
-			Location min = new Location(gc.myBuildLoc.getWorld(), gc.min.getX(), gc.min.getY(), gc.min.getZ());//TODO test
-			Location max = new Location(gc.myBuildLoc.getWorld(), gc.max.getX(), gc.max.getY(), gc.max.getZ());//TODO test
+			//Location min = new Location(gc.myBuildLoc.getWorld(), gc.min.getX(), gc.min.getY(), gc.min.getZ());//TODO test
+			//Location max = new Location(gc.myBuildLoc.getWorld(), gc.max.getX(), gc.max.getY(), gc.max.getZ());//TODO test
 			
 			//gc.myBuildLoc.clone().add(0, 2, 0).getBlock().setType(Material.REDSTONE_BLOCK);
 			//min.getBlock().setType(Material.MELON_BLOCK);
@@ -431,14 +431,22 @@ public class Generator {
 	public World create(String name) {
 		World world = Bukkit.getServer().getWorld(name);
 		if (world == null) {
-			System.out.println("Loading world '" + name + "'.");
-			WorldCreator arenaWorldCreator = new WorldCreator(name);
-			arenaWorldCreator.generateStructures(false);
-			arenaWorldCreator.generator(new VoidGenerator());
-			arenaWorldCreator.type(WorldType.FLAT);
-			arenaWorldCreator.environment(Environment.NETHER);
-			arenaWorldCreator.seed(0);
-			world = arenaWorldCreator.createWorld();
+			
+			Bukkit.getScheduler().runTaskAsynchronously(DG.plugin, new Runnable() {
+				
+				@Override
+				public void run() {
+					System.out.println("Loading world '" + name + "'.");
+					WorldCreator arenaWorldCreator = new WorldCreator(name);
+					arenaWorldCreator.generateStructures(false);
+					arenaWorldCreator.generator(new VoidGenerator());
+					arenaWorldCreator.type(WorldType.FLAT);
+					arenaWorldCreator.environment(Environment.NETHER);
+					arenaWorldCreator.seed(0);
+					arenaWorldCreator.createWorld();
+				}
+			});
+			
 			System.out.println("Done loading world '" + name + "'.");
 		} else {
 			System.out.println("The world '" + name + "' was already loaded.");
